@@ -1,4 +1,11 @@
-#!/home/gitpod/.pyenv/shims/python3
+
+from screen import HANGMANPICS as hangman
+import os
+
+def game(name, rounds_nr, word_to_guess):
+    os.system("clear")
+    print(hangman[6])
+
 def main():
     word_to_guess = "gift"
     rounds_nr = 0
@@ -12,5 +19,15 @@ def main():
             break
         else:
             print("Oops! Try again")
+
+    game(name, rounds_nr, word_to_guess)
+
+
+# def update_board(name, rounds_nr, word_to_guess, strikes, score):
+
+# class screen():
+#     print("Strikes:")
+
 if __name__ == "__main__":
     main()
+    
