@@ -4,6 +4,9 @@ from screen import HANGMANPICS as hangman
 
 
 def get_random_word(file_name):
+    """
+    Get a random word from a file.txt.
+    """
     with open(file_name, "r") as file:
         all_text = file.read()
         words = list(map(str, all_text.split()))
@@ -13,6 +16,11 @@ def get_random_word(file_name):
 
 
 def refresh_board(name, rounds_nr, word, tries, score, message):
+    """
+    Player's name, number of tries left, round number, score, messages,
+    the ASCII HANGMAN grafic and empty lines for word will be displayed.
+    This information will be updated acordin to game result.
+    """
     os.system("clear")
     print(f"Name: {name}")
     print(f"Tries left: {tries}")
@@ -28,15 +36,14 @@ def game(name, rounds_nr, word):
     """
     Starts game, colecting user imput in form of letter or words.
     Each validated imput, will prompt a message in terminal for 3 scenarios:
-    letter is in word, already used letter/word or incorrect. 
+    letter is in word, already used letter/word or incorrect.
     """
     word_guess = ["_"] * len(word)
     tries = 6
-    # score = 
     guessed = False
     message = ""
     # used_letters = []
-    guessed_words = []
+    # guessed_words = []
     word_list = list(word)
 
     while not guessed and tries > 0:
@@ -48,7 +55,7 @@ def game(name, rounds_nr, word):
                 message = "That's right!"
             else:
                 message = "Nice try!"
-                tries -= 1        
+                tries -= 1
         # elif len(guess) == len(word_list):
         #     if guess in guessed_words:
         #         message = f"You already tried {guess}!"
@@ -61,12 +68,11 @@ def game(name, rounds_nr, word):
         #         guessed = True
         else:
             message = "Character not valid. Try again!"
-        
 
         for i in range(len(word_guess)):
             if guess == word_list[i]:
                 word_guess[i] = guess
-        
+
         if word_guess == word_list:
             message = "You won!"
             break
@@ -74,11 +80,19 @@ def game(name, rounds_nr, word):
     if tries == 0:
         message = "You're dead!"
 
-
     refresh_board(name, rounds_nr, ' '.join(word_guess), tries, 0, message)
 
 
 def main():
+    """
+    Get input from the user.
+    User will introduce a name (all characters accepted) and
+    a welcome message will be displayed.
+    Run a while loop to collect a numeric imput for rounds number from the user
+    via the terminal. The loop will repeatedly request data, until it is valid.
+
+    """
+    # test values
     rounds_nr = 0
     print("Let's play Hangman!")
     name = "Mihaela"
