@@ -30,27 +30,28 @@ def game(name, rounds_nr, word):
     Each validated imput, will prompt a message in terminal for 3 scenarios:
     letter is in word, already used letter/word or incorrect. 
     """
-    word_to_guess = "_ " * len(word)
+    word_guess = ["_"] * len(word)
     tries = 6
     guessed = False
     message = ""
     # used_letters = []
     guessed_words = []
+    word_list = list(word)
 
     while not guessed and tries > 0:
-        refresh_board(name, rounds_nr, word_to_guess, tries, 0, message)
+        refresh_board(name, rounds_nr, ' '.join(word_guess), tries, 0, message)
 
         guess = input("Enter a letter/word: ").upper()
         if guess.isalpha():
-            if guess in word:
+            if guess in word_list:
                 message = "That's right!"
             else:
                 tries -= 1
-        elif len(guess) == len(word):
+        elif len(guess) == len(word_list):
             if guess in guessed_words:
                 message = f"You already tried {guess}!"
 
-            elif guess != word:
+            elif guess != word_list:
                 message = "Incorrect!"
                 tries -= 1
                 guessed_words.append(guess)
@@ -59,7 +60,12 @@ def game(name, rounds_nr, word):
         else:
             message = "Character not valid. Try again!"
 
-    refresh_board(name, rounds_nr, word_to_guess, tries, 0, "You're dead!")
+        for i in range(len(word_guess)):
+            if guess == word_list[i]:
+                word_guess[i] = guess
+
+
+    refresh_board(name, rounds_nr, ' '.join(word_guess), tries, 0, message)
 
 
 def main():
@@ -77,7 +83,7 @@ def main():
     #     else:
     #         print("Oops! Try again")
     # word = get_random_word("words.txt")
-    game(name, rounds_nr, "MAMELON")
+    game(name, rounds_nr, "MAMA")
 
 
 if __name__ == "__main__":
