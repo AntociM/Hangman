@@ -53,22 +53,27 @@ def game(name, rounds_nr, word):
         refresh_board(name, rounds_nr, ' '.join(word_guess), tries, 0, message)
 
         guess = input("Enter a letter/word: ").upper()
-        if guess.isalpha():
-            if guess in word_list:
-                message = "That's right!"
-            else:
-                message = "Nice try!"
-                tries -= 1
-        # elif len(guess) == len(word_list):
-        #     if guess in guessed_words:
-        #         message = f"You already tried {guess}!"
 
-        #     elif guess != word_list:
-        #         message = "Incorrect!"
-        #         tries -= 1
-        #         guessed_words.append(guess)
-        #     else:
-        #         guessed = True
+        # Check if word contains only letters
+        if guess.isalpha():
+
+            if len(guess) == 1:
+                # It's a letter
+                if guess in word_list:
+                    message = "That's right!"
+                else:
+                    message = "Nice try!"
+                    tries -= 1
+            else:
+                # User introduce a word
+                if list(guess) == word_list:
+                    word_guess = guess
+                    message = "Great job!"
+                    guessed = True
+                else:
+                    message = "Wrong word!"
+                    tries -= 1
+
         else:
             message = "Character not valid. Try again!"
 
