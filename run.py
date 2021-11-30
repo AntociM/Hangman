@@ -32,6 +32,7 @@ def game(name, rounds_nr, word):
     """
     word_guess = ["_"] * len(word)
     tries = 6
+    # score = 
     guessed = False
     message = ""
     # used_letters = []
@@ -46,23 +47,32 @@ def game(name, rounds_nr, word):
             if guess in word_list:
                 message = "That's right!"
             else:
-                tries -= 1
-        elif len(guess) == len(word_list):
-            if guess in guessed_words:
-                message = f"You already tried {guess}!"
+                message = "Nice try!"
+                tries -= 1        
+        # elif len(guess) == len(word_list):
+        #     if guess in guessed_words:
+        #         message = f"You already tried {guess}!"
 
-            elif guess != word_list:
-                message = "Incorrect!"
-                tries -= 1
-                guessed_words.append(guess)
-            else:
-                guessed = True
+        #     elif guess != word_list:
+        #         message = "Incorrect!"
+        #         tries -= 1
+        #         guessed_words.append(guess)
+        #     else:
+        #         guessed = True
         else:
             message = "Character not valid. Try again!"
+        
 
         for i in range(len(word_guess)):
             if guess == word_list[i]:
                 word_guess[i] = guess
+        
+        if word_guess == word_list:
+            message = "You won!"
+            break
+
+    if tries == 0:
+        message = "You're dead!"
 
 
     refresh_board(name, rounds_nr, ' '.join(word_guess), tries, 0, message)
