@@ -1,3 +1,6 @@
+'''
+Main hangmand files
+'''
 import os
 import random
 from screen import HANGMANPICS as hangman
@@ -7,7 +10,7 @@ def get_random_word(file_name):
     """
     Get a random word from a file.txt.
     """
-    with open(file_name, "r") as file:
+    with open(file_name, "r", encoding="UTF-8") as file:
         all_text = file.read()
         words = list(map(str, all_text.split()))
         word = random.choice(words).upper()
@@ -106,7 +109,7 @@ def main():
     #         break
     #     else:
     #         print("Oops! Try again")
-    # word = get_random_word("words.txt")
+    # word = get_random_word("assets/words.txt")
     game(name, rounds_nr, "MAMA")
 
 
