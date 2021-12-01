@@ -133,7 +133,7 @@ def main():
     print(f"Welcome, {name}")
     while True:
         rounds_nr = input("Insert number of rounds from 1 to 10: ")
-        if rounds_nr.isnumeric():
+        if rounds_nr.isnumeric() and int(rounds_nr) >= 1 and int(rounds_nr) <= 10:
             break
         else:
             print("Oops! Try again")
