@@ -18,7 +18,7 @@ def get_random_word(file_name):
         return word
 
 
-def refresh_board(name, rounds_nr, word, count, tries, score, message):
+def refresh_board(name, rounds_nr, word, count, tries, score, message, guessed_words, used_letters):
     """
     Player's name, number of tries left, round number, score, messages,
     the ASCII HANGMAN grafic and empty lines for word will be displayed.
@@ -33,6 +33,8 @@ def refresh_board(name, rounds_nr, word, count, tries, score, message):
     print(hangman[len(hangman)-1 - tries])
     print(message)
     print(word)
+    print(f"Wrong words: {guessed_words}")
+    print(f"Used letters: {used_letters}")
 
 
 def game(name, rounds_nr):
@@ -49,8 +51,6 @@ def game(name, rounds_nr):
 
     score = 0
     message = ""
-    # used_letters = []
-    # guessed_words = []
     # word_list = list(word)
     count = 0
 
@@ -59,6 +59,8 @@ def game(name, rounds_nr):
         count = count + 1
         message = f"Welcome to round {count}"
         tries = 6
+        used_letters = []
+        guessed_words = []
 
         # Round
         guessed = False
@@ -67,8 +69,16 @@ def game(name, rounds_nr):
         word_list = list(word)
 
         while not guessed and tries > 0:
-            refresh_board(name, rounds_nr, ' '.join(
-                word_guess), count, tries, score, message)
+            refresh_board(
+                name,
+                rounds_nr, ' '.join(word_guess),
+                count,
+                tries,
+                score,
+                message,
+                ',  '.join(guessed_words),
+                ',  '.join(used_letters)
+            )
 
             guess = input("Enter a letter/word: ").upper()
 
@@ -82,6 +92,7 @@ def game(name, rounds_nr):
                     else:
                         message = "Nice try!"
                         tries -= 1
+                        used_letters.append(guess)
                 else:
                     # User introduce a word
                     if list(guess) == word_list:
@@ -91,6 +102,7 @@ def game(name, rounds_nr):
                         guessed = True
                     else:
                         message = "Wrong word!"
+                        guessed_words.append(guess)
                         tries -= 1
 
             else:
@@ -108,8 +120,16 @@ def game(name, rounds_nr):
 
         if tries == 0:
             message = f"You're dead! The correct word was: {''.join(word_list)}"
-        refresh_board(name, rounds_nr, ' '.join(
-            word_guess), count, tries, score, message)
+        refresh_board(
+            name,
+            rounds_nr, ' '.join(word_guess),
+            count,
+            tries,
+            score,
+            message,
+            ', '.join(guessed_words),
+            ', '.join(used_letters)
+        )
 
         if count < int(rounds_nr):
             input("Enter any key to continue: ")
