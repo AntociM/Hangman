@@ -41,14 +41,13 @@ def game(name, rounds_nr, word):
     Each validated imput, will prompt a message in terminal for 3 scenarios:
     letter is in word, already used letter/word or incorrect.
     """
-    # TODO: implement round_nr calculator, same with score.
-    # display word at the end of the game
-    # create used letter and words lists
-    # at the end of the game, option to continue playing or exit (y/n)
+    # TODO:
+    # [x] implement round_nr calculator, same with score.
+    # [ ] display word at the end of the game
+    # [ ] create used letter and words lists
+    # [ ] at the end of the game, option to continue playing or exit (y/n)
 
-    word_guess = ["_"] * len(word)
-    tries = 6
-    guessed = False
+    score = 0
     message = ""
     # used_letters = []
     # guessed_words = []
@@ -59,11 +58,15 @@ def game(name, rounds_nr, word):
     while count < rounds_nr:
         count = count + 1
         message = f"Welcome to round {count}"
+        tries = 6
 
         # Round
         guessed = False
+        word_guess = ["_"] * len(word)
+
         while not guessed and tries > 0:
-            refresh_board(name, rounds_nr, ' '.join(word_guess), count, tries, 0, message)
+            refresh_board(name, rounds_nr, ' '.join(
+                word_guess), count, tries, score, message)
 
             guess = input("Enter a letter/word: ").upper()
 
@@ -82,6 +85,7 @@ def game(name, rounds_nr, word):
                     if list(guess) == word_list:
                         word_guess = guess
                         message = "Great job!"
+                        score += 1
                         guessed = True
                     else:
                         message = "Wrong word!"
@@ -96,11 +100,13 @@ def game(name, rounds_nr, word):
 
             if word_guess == word_list:
                 message = "You won!"
+                score += 1
                 guessed = True
-        
+
         if tries == 0:
             message = "You're dead!"
-        refresh_board(name, rounds_nr, ' '.join(word_guess), count, tries, 0, message)
+        refresh_board(name, rounds_nr, ' '.join(
+            word_guess), count, tries, score, message)
 
 
 def main():
