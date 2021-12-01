@@ -18,7 +18,7 @@ def get_random_word(file_name):
         return word
 
 
-def refresh_board(name, rounds_nr, word, tries, score, message):
+def refresh_board(name, rounds_nr, word, count, tries, score, message):
     """
     Player's name, number of tries left, round number, score, messages,
     the ASCII HANGMAN grafic and empty lines for word will be displayed.
@@ -28,7 +28,7 @@ def refresh_board(name, rounds_nr, word, tries, score, message):
     print(f"Name: {name}")
     print(f"Tries left: {tries}")
     # print("Used letters: ")
-    print(f"Round number: {rounds_nr}")
+    print(f"Round: {count}/{rounds_nr}")
     print(f"Score: {score}")
     print(hangman[len(hangman)-1 - tries])
     print(message)
@@ -41,6 +41,11 @@ def game(name, rounds_nr, word):
     Each validated imput, will prompt a message in terminal for 3 scenarios:
     letter is in word, already used letter/word or incorrect.
     """
+    # TODO: implement round_nr calculator, same with score.
+    # display word at the end of the game
+    # create used letter and words lists
+    # at the end of the game, option to continue playing or exit (y/n)
+
     word_guess = ["_"] * len(word)
     tries = 6
     guessed = False
@@ -48,47 +53,54 @@ def game(name, rounds_nr, word):
     # used_letters = []
     # guessed_words = []
     word_list = list(word)
+    count = 0
 
-    while not guessed and tries > 0:
-        refresh_board(name, rounds_nr, ' '.join(word_guess), tries, 0, message)
+    # Game
+    while count < rounds_nr:
+        count = count + 1
+        message = f"Welcome to round {count}"
 
-        guess = input("Enter a letter/word: ").upper()
+        # Round
+        guessed = False
+        while not guessed and tries > 0:
+            refresh_board(name, rounds_nr, ' '.join(word_guess), count, tries, 0, message)
 
-        # Check if word contains only letters
-        if guess.isalpha():
+            guess = input("Enter a letter/word: ").upper()
 
-            if len(guess) == 1:
-                # It's a letter
-                if guess in word_list:
-                    message = "That's right!"
+            # Check if word contains only letters
+            if guess.isalpha():
+
+                if len(guess) == 1:
+                    # It's a letter
+                    if guess in word_list:
+                        message = "That's right!"
+                    else:
+                        message = "Nice try!"
+                        tries -= 1
                 else:
-                    message = "Nice try!"
-                    tries -= 1
+                    # User introduce a word
+                    if list(guess) == word_list:
+                        word_guess = guess
+                        message = "Great job!"
+                        guessed = True
+                    else:
+                        message = "Wrong word!"
+                        tries -= 1
+
             else:
-                # User introduce a word
-                if list(guess) == word_list:
-                    word_guess = guess
-                    message = "Great job!"
-                    guessed = True
-                else:
-                    message = "Wrong word!"
-                    tries -= 1
+                message = "Character not valid. Try again!"
 
-        else:
-            message = "Character not valid. Try again!"
+            for i in range(len(word_guess)):
+                if guess == word_list[i]:
+                    word_guess[i] = guess
 
-        for i in range(len(word_guess)):
-            if guess == word_list[i]:
-                word_guess[i] = guess
-
-        if word_guess == word_list:
-            message = "You won!"
-            break
-
-    if tries == 0:
-        message = "You're dead!"
-
-    refresh_board(name, rounds_nr, ' '.join(word_guess), tries, 0, message)
+            if word_guess == word_list:
+                message = "You won!"
+                guessed = True
+        
+        if tries == 0:
+            message = "You're dead!"
+        refresh_board(name, rounds_nr, ' '.join(word_guess), count, tries, 0, message)
 
 
 def main():
@@ -101,7 +113,6 @@ def main():
 
     """
     # test values
-    rounds_nr = 0
     print("Let's play Hangman!")
     name = "Mihaela"
     rounds_nr = 2
