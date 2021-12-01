@@ -18,23 +18,41 @@ def get_random_word(file_name):
         return word
 
 
-def refresh_board(name, rounds_nr, word, count, tries, score, message, guessed_words, used_letters):
+def refresh_board(name, rounds_nr, word, count, tries, score, message, used_words, used_letters):
     """
     Player's name, number of tries left, round number, score, messages,
     the ASCII HANGMAN grafic and empty lines for word will be displayed.
     This information will be updated acordin to game result.
     """
     os.system("clear")
-    print(f"Name: {name}")
-    print(f"Tries left: {tries}")
-    # print("Used letters: ")
-    print(f"Round: {count}/{rounds_nr}")
-    print(f"Score: {score}")
-    print(hangman[len(hangman)-1 - tries])
-    print(message)
-    print(word)
-    print(f"Wrong words: {guessed_words}")
-    print(f"Used letters: {used_letters}")
+    print(f'''
+
+█░█ ▄▀█ █▄░█ █▀▀ █▀▄▀█ ▄▀█ █▄░█
+█▀█ █▀█ █░▀█ █▄█ █░▀░█ █▀█ █░▀█
+
+===============================
+
+Name       | {name}
+Score      | {score}
+Round      | {count}/{rounds_nr}
+Tries left | {tries}
+{hangman[len(hangman)-1 - tries]}
+
+{message}
+{word}
+Used words: {used_words}
+Used letters: {used_letters}
+''')
+    # print(f"Name: {name}")
+    # print(f"Tries left: {tries}")
+    # # print("Used letters: ")
+    # print(f"Round: {count}/{rounds_nr}")
+    # print(f"Score: {score}")
+    # print(hangman[len(hangman)-1 - tries])
+    # print(message)
+    # print(word)
+    # print(f"Wrong words: {used_words}")
+    # print(f"Used letters: {used_letters}")
 
 
 def game(name, rounds_nr):
@@ -46,7 +64,7 @@ def game(name, rounds_nr):
     # TODO:
     # [x] implement round_nr calculator, same with score.
     # [X] display word at the end of the game
-    # [ ] create used letter and words lists
+    # [x] create used letter and words lists
     # [ ] at the end of the game, option to continue playing or exit (y/n)
 
     score = 0
@@ -145,7 +163,23 @@ def main():
 
     """
     # test values
-    # print("Let's play Hangman!")
+    # print("Let's play Hangman! Player tries to guess a word by suggesting letters/words within 6 guesses. The word to guess is represented by a row of dashes, representing each letter of the word.")
+
+    print(
+'''
+
+█░█ ▄▀█ █▄░█ █▀▀ █▀▄▀█ ▄▀█ █▄░█
+█▀█ █▀█ █░▀█ █▄█ █░▀░█ █▀█ █░▀█
+
+===============================
+
+Let's play Hangman!
+Player tries to guess a word by suggesting
+letters/words within 6 guesses. The word to
+guess is represented by a row of dashes,
+representing each letter of the word.
+        '''
+    )
     # name = "Mihaela"
     # rounds_nr = 2
     # Uncomment later
