@@ -21,8 +21,8 @@ def get_random_word(file_name):
 def refresh_board(name, rounds_nr, word, count, tries, score, message, used_words, used_letters):
     """
     Player's name, number of tries left, round number, score, messages,
-    the ASCII HANGMAN grafic and empty lines for word will be displayed.
-    This information will be updated acordin to game result.
+    the ASCII HANGMAN grafic and a row of dashes for word will be displayed.
+    This information will be updated acording to game result.
     """
     os.system("clear")
     print(f'''
@@ -31,28 +31,21 @@ def refresh_board(name, rounds_nr, word, count, tries, score, message, used_word
 █▀█ █▀█ █░▀█ █▄█ █░▀░█ █▀█ █░▀█
 
 ===============================
-
 Name       | {name}
 Score      | {score}
 Round      | {count}/{rounds_nr}
 Tries left | {tries}
 {hangman[len(hangman)-1 - tries]}
 
-{message}
-{word}
+-------------------------------
 Used words: {used_words}
 Used letters: {used_letters}
+-------------------------------
+
+{message}
+
+{word}
 ''')
-    # print(f"Name: {name}")
-    # print(f"Tries left: {tries}")
-    # # print("Used letters: ")
-    # print(f"Round: {count}/{rounds_nr}")
-    # print(f"Score: {score}")
-    # print(hangman[len(hangman)-1 - tries])
-    # print(message)
-    # print(word)
-    # print(f"Wrong words: {used_words}")
-    # print(f"Used letters: {used_letters}")
 
 
 def game(name, rounds_nr):
@@ -65,7 +58,9 @@ def game(name, rounds_nr):
     # [x] implement round_nr calculator, same with score.
     # [X] display word at the end of the game
     # [x] create used letter and words lists
-    # [ ] at the end of the game, option to continue playing or exit (y/n)
+    # [x] at the end of the game, option to continue playing or exit (y/n)
+    # [ ] print the correct word in the _ _ _ section
+    # [ ] prevent multiple insertion 
 
     score = 0
     message = ""
@@ -75,7 +70,7 @@ def game(name, rounds_nr):
     # Game
     while count < int(rounds_nr):
         count = count + 1
-        message = f"Welcome to round {count}"
+        message = "Let's start!"
         tries = 6
         used_letters = []
         guessed_words = []
@@ -128,7 +123,6 @@ def game(name, rounds_nr):
 
             for i in range(len(word_guess)):
                 if guess == word_list[i]:
-                    print(word_list)
                     word_guess[i] = guess
 
             if word_guess == word_list:
@@ -152,6 +146,9 @@ def game(name, rounds_nr):
         if count < int(rounds_nr):
             input("Enter any key to continue: ")
 
+    # if count == int(rounds_nr):
+        print("Game over!")
+
 
 def main():
     """
@@ -162,9 +159,8 @@ def main():
     via the terminal. The loop will repeatedly request data, until it is valid.
 
     """
-    # test values
-    # print("Let's play Hangman! Player tries to guess a word by suggesting letters/words within 6 guesses. The word to guess is represented by a row of dashes, representing each letter of the word.")
 
+    os.system('clear')
     print(
 '''
 
@@ -180,18 +176,28 @@ guess is represented by a row of dashes,
 representing each letter of the word.
         '''
     )
-    # name = "Mihaela"
-    # rounds_nr = 2
-    # Uncomment later
     name = input("Enter your name: ")
-    print(f"Welcome, {name}")
     while True:
-        rounds_nr = input("Insert number of rounds from 1 to 10: ")
-        if rounds_nr.isnumeric() and int(rounds_nr) >= 1 and int(rounds_nr) <= 10:
-            break
+        os.system('clear')
+        print(f"Welcome, {name}!")
+
+        # Run until valid input
+        while True:
+            rounds_nr = input("Insert number of rounds from 1 to 10: ")
+            if rounds_nr.isnumeric() and int(rounds_nr) >= 1 and int(rounds_nr) <= 10:
+                break
+            else:
+                print("Oops! Try again")
+        
+        game(name, rounds_nr)
+
+        # Exit
+        if input("Do you want to play a new game?\nPress 'Y' to continue, anything else to exit: ").upper() == "Y":
+            continue
         else:
-            print("Oops! Try again")
-    game(name, rounds_nr)
+            break
+
+        
 
 
 if __name__ == "__main__":
