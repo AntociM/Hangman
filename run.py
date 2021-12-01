@@ -35,7 +35,7 @@ def refresh_board(name, rounds_nr, word, count, tries, score, message):
     print(word)
 
 
-def game(name, rounds_nr, word):
+def game(name, rounds_nr):
     """
     Starts game, colecting user imput in form of letter or words.
     Each validated imput, will prompt a message in terminal for 3 scenarios:
@@ -43,7 +43,7 @@ def game(name, rounds_nr, word):
     """
     # TODO:
     # [x] implement round_nr calculator, same with score.
-    # [ ] display word at the end of the game
+    # [X] display word at the end of the game
     # [ ] create used letter and words lists
     # [ ] at the end of the game, option to continue playing or exit (y/n)
 
@@ -51,18 +51,20 @@ def game(name, rounds_nr, word):
     message = ""
     # used_letters = []
     # guessed_words = []
-    word_list = list(word)
+    # word_list = list(word)
     count = 0
 
     # Game
-    while count < rounds_nr:
+    while count < int(rounds_nr):
         count = count + 1
         message = f"Welcome to round {count}"
         tries = 6
 
         # Round
         guessed = False
+        word = get_random_word("assets/words.txt")
         word_guess = ["_"] * len(word)
+        word_list = list(word)
 
         while not guessed and tries > 0:
             refresh_board(name, rounds_nr, ' '.join(
@@ -96,6 +98,7 @@ def game(name, rounds_nr, word):
 
             for i in range(len(word_guess)):
                 if guess == word_list[i]:
+                    print(word_list)
                     word_guess[i] = guess
 
             if word_guess == word_list:
@@ -104,9 +107,12 @@ def game(name, rounds_nr, word):
                 guessed = True
 
         if tries == 0:
-            message = "You're dead!"
+            message = f"You're dead! The correct word was: {''.join(word_list)}"
         refresh_board(name, rounds_nr, ' '.join(
             word_guess), count, tries, score, message)
+
+        if count < int(rounds_nr):
+            input("Enter any key to continue: ")
 
 
 def main():
@@ -119,20 +125,19 @@ def main():
 
     """
     # test values
-    print("Let's play Hangman!")
-    name = "Mihaela"
-    rounds_nr = 2
+    # print("Let's play Hangman!")
+    # name = "Mihaela"
+    # rounds_nr = 2
     # Uncomment later
-    # name = input("Enter your name: ")
-    # print(f"Welcome, {name}")
-    # while True:
-    #     rounds_nr = input("Insert number of rounds from 1 to 10: ")
-    #     if rounds_nr.isnumeric():
-    #         break
-    #     else:
-    #         print("Oops! Try again")
-    # word = get_random_word("assets/words.txt")
-    game(name, rounds_nr, "MAMA")
+    name = input("Enter your name: ")
+    print(f"Welcome, {name}")
+    while True:
+        rounds_nr = input("Insert number of rounds from 1 to 10: ")
+        if rounds_nr.isnumeric():
+            break
+        else:
+            print("Oops! Try again")
+    game(name, rounds_nr)
 
 
 if __name__ == "__main__":
