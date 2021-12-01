@@ -51,12 +51,11 @@ Name       | {name}
 Score      | {score}
 Round      | {current_round}/{max_rounds}
 Tries left | {tries}
-{hangman[len(hangman)-1 - tries]}
-
 -------------------------------
 Used words: {used_words}
 Used letters: {used_letters}
 -------------------------------
+{hangman[len(hangman)-1 - tries]}
 
 {message}
 
@@ -141,8 +140,8 @@ def play_round(name, current_round, max_rounds, score):
             guessed = True
 
         if tries == 0:
-            message = f"You're dead! The correct word was: \
-{''.join(word_list)}"
+            word_guess = word_list
+            message = "You lost! The correct word was: "
 
         refresh_board(
             name=name,
@@ -185,7 +184,17 @@ def game(name, rounds_nr):
         if count < int(rounds_nr):
             input("Press enter to start the next round: ")
 
-        print("Game over!")
+        print(f'''
+-----------------------------------
+
+█▀▀ ▄▀█ █▀▄▀█ █▀▀   █▀█ █░█ █▀▀ █▀█
+█▄█ █▀█ █░▀░█ ██▄   █▄█ ▀▄▀ ██▄ █▀▄
+
+You guessed {score} out of {rounds_nr}.
+
+-----------------------------------
+
+''')
 
 
 def main():
@@ -235,6 +244,10 @@ anything else to exit: ").upper() == "Y":
             continue
         else:
             break
+
+    print('''
+Thank you for playing! Hope to see you soon.
+    ''')
 
 
 if __name__ == "__main__":
