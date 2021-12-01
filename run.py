@@ -8,7 +8,11 @@ from screen import HANGMANPICS as hangman
 
 def get_random_word(file_name):
     """
-    Get a random word from a file.txt.
+    Get a random word from a file.
+    Args:
+        file_name   : path to a text file
+    Return:
+        word        : a string containing the random word
     """
     with open(file_name, "r", encoding="UTF-8") as file:
         all_text = file.read()
@@ -20,15 +24,16 @@ def get_random_word(file_name):
 
 def refresh_board(**kwargs):
     """
-    Player's name, number of tries left, round number, score, messages,
-    the ASCII HANGMAN grafic and a row of dashes for word will be displayed.
-    This information will be updated acording to game result.
+    This function is used to print the game progress in terminal.
+    First it clears the terminal, then player's name, number of
+    tries left, round number, score, extra messages, the ASCII
+    HANGMAN grafic and a row of dashes for word will be displayed.
     """
 
     name = kwargs['name']
-    rounds_nr = kwargs['rounds_nr']
+    max_rounds = kwargs['max_rounds']
     word = kwargs['word']
-    count = kwargs['count']
+    current_round = kwargs['current_round']
     tries = kwargs['tries']
     score = kwargs['score']
     message = kwargs['message']
@@ -44,7 +49,7 @@ def refresh_board(**kwargs):
 ===============================
 Name       | {name}
 Score      | {score}
-Round      | {count}/{rounds_nr}
+Round      | {current_round}/{max_rounds}
 Tries left | {tries}
 {hangman[len(hangman)-1 - tries]}
 
@@ -59,92 +64,38 @@ Used letters: {used_letters}
 ''')
 
 
-def game(name, rounds_nr):
-    """
-    Starts game, colecting user imput in form of letter or words.
-    Each validated imput, will prompt a message in terminal for 3 scenarios:
-    letter is in word, already used letter/word or incorrect.
-    """
+def play_round(name, current_round, max_rounds, score):
+    '''
+    This task contains the main hangman functionality.
+    It chooses a random word from the text file, then
+    it asks the user to insert characters or words,
+    until the word is guessed or tries are 0.
 
-    score = 0
-    message = ""
-    # word_list = list(word)
-    count = 0
+    Args:
+        name            : name of the user
+        current_round   : the round number inside the game
+        max_rounds      : the maximum number of rounds in the game
+        score           : the score
+    Return:
+        0               : when the round is lost
+        1               : when the round is won
+    '''
+    message = "Let's start !"
+    tries = 6
+    used_letters = []
+    guessed_words = []
+    guessed = False
+    word = get_random_word("assets/words.txt")
+    word_guess = ["_"] * len(word)
+    word_list = list(word)
+    win = 0
 
-    # Game
-    while count < int(rounds_nr):
-        count = count + 1
-        message = "Let's start!"
-        tries = 6
-        used_letters = []
-        guessed_words = []
-
-        # Round
-        guessed = False
-        word = get_random_word("assets/words.txt")
-        word_guess = ["_"] * len(word)
-        word_list = list(word)
-
-        while not guessed and tries > 0:
-            refresh_board(
-                name=name,
-                rounds_nr=rounds_nr,
-                word=' '.join(word_guess),
-                count=count,
-                tries=tries,
-                score=score,
-                message=message,
-                used_words=',  '.join(guessed_words),
-                used_letters=',  '.join(used_letters)
-            )
-
-            guess = input("Enter a letter/word: ").upper()
-
-            # Check if word contains only letters
-            if guess.isalpha():
-
-                if len(guess) == 1:
-                    # It's a letter
-                    if guess in word_list:
-                        message = "That's right!"
-                    else:
-                        message = "Nice try!"
-                        tries -= 1
-                        if guess not in used_letters:
-                            used_letters.append(guess)
-                else:
-                    # User introduce a word
-                    if list(guess) == word_list:
-                        word_guess = guess
-                        message = "Great job!"
-                        score += 1
-                        guessed = True
-                    else:
-                        message = "Wrong word!"
-                        if guess not in guessed_words:
-                            guessed_words.append(guess)
-                        tries -= 1
-
-            else:
-                message = "Character not valid. Try again!"
-
-            for i in range(len(word_guess)):
-                if guess == word_list[i]:
-                    word_guess[i] = guess
-
-            if word_guess == word_list:
-                message = "You won!"
-                score += 1
-                guessed = True
-
-        if tries == 0:
-            message = f"You're dead! The correct word was: \
-                {''.join(word_list)}"
+    while not guessed and tries > 0:
         refresh_board(
             name=name,
-            rounds_nr=rounds_nr,
+            max_rounds=max_rounds,
             word=' '.join(word_guess),
-            count=count,
+            current_round=current_round,
             tries=tries,
             score=score,
             message=message,
@@ -152,10 +103,88 @@ def game(name, rounds_nr):
             used_letters=',  '.join(used_letters)
         )
 
-        if count < int(rounds_nr):
-            input("Enter any key to continue: ")
+        guess = input("Enter a letter/word: ").upper()
 
-    # if count == int(rounds_nr):
+        # Check if word contains only letters
+        if guess.isalpha():
+            if len(guess) == 1:
+                # It's a letter
+                if guess in word_list:
+                    message = "That's right!"
+                else:
+                    message = "Nice try!"
+                    tries -= 1
+                    if guess not in used_letters:
+                        used_letters.append(guess)
+            else:
+                # User introduce a word
+                if list(guess) == word_list:
+                    word_guess = guess
+                    message = "Great job!"
+                    win = 1
+                    guessed = True
+                else:
+                    message = "Wrong word!"
+                    if guess not in guessed_words:
+                        guessed_words.append(guess)
+                    tries -= 1
+        else:
+            message = "Character not valid. Try again!"
+
+        for i in range(len(word_guess)):
+            if guess == word_list[i]:
+                word_guess[i] = guess
+
+        if word_guess == word_list:
+            message = "You won!"
+            win = 1
+            guessed = True
+
+        if tries == 0:
+            message = f"You're dead! The correct word was: \
+{''.join(word_list)}"
+
+        refresh_board(
+            name=name,
+            max_rounds=max_rounds,
+            word=' '.join(word_guess),
+            current_round=current_round,
+            tries=tries,
+            score=score,
+            message=message,
+            used_words=',  '.join(guessed_words),
+            used_letters=',  '.join(used_letters)
+        )
+    return win
+
+
+def game(name, rounds_nr):
+    """
+    One game is composed from one or more rounds. This function
+    controls how many rounds are played, and keep tracks or the
+    score.
+
+    Args:
+        name        : the name of the player
+        rounds_nr   : how many rounds the game has
+    Return:
+        none
+    """
+
+    score = 0
+    count = 0
+
+    # Game
+    while count < int(rounds_nr):
+
+        # Round
+        count = count + 1
+
+        score += play_round(name, count, rounds_nr, score)
+
+        if count < int(rounds_nr):
+            input("Press enter to start the next round: ")
+
         print("Game over!")
 
 
@@ -176,12 +205,13 @@ def main():
 █▀█ █▀█ █░▀█ █▄█ █░▀░█ █▀█ █░▀█
 
 ===============================
+Welcome to Hangman!
 
-Let's play Hangman!
-Player tries to guess a word by suggesting
-letters/words within 6 guesses. The word to
-guess is represented by a row of dashes,
-representing each letter of the word.
+Rules of the game:
+------------------
+You will need to guess a random word by suggesting letters or words,
+within 6 guesses. The word to guess is represented by a row of dashes,
+with each dash representing a letter of the word. Good luck!
 ''')
 
     name = input("Enter your name: ")
