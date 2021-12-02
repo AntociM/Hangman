@@ -23,6 +23,33 @@ Game progress will be displayed all the time, represented by score, round number
 
 Graphically, each new body part of the Hangman simbolyse an inccorect input.
 
+## Features
+
+### Existing Features
+
+-Accepts user imput
+
+![Board img] (../assets/images/Board1.jpg)
+
+-Mentains score
+
+-Updates round number
+
+-Randomly generates one word
+
+   One word is randomly selected and represented by a row of dashes
+
+   The player cannot see the entire word until a correct guess is made or game over.
+
+-Input validation and error-checking
+
+ -- for number of rounds, the player can introduce only numeric character between 1-10.
+ -- the player can introduce just letters or words to guess the secret word
+ -- only correct letters will be displayed in that line, same with words
+ -- player can't introduce the same guess twice
+ -- at the end of the game, user's selection is verified
+
+
 
 
 ```mermaid
