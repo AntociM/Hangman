@@ -26,8 +26,8 @@ def refresh_board(**kwargs):
     """
     This function is used to print the game progress in terminal.
     First it clears the terminal, then player's name, number of
-    tries left, round number, score, extra messages, the ASCII
-    HANGMAN grafic and a row of dashes for word will be displayed.
+    tries left, round number, score, extra messages, used words/letters,
+    the ASCII HANGMAN grafic and a row of dashes for word will be displayed.
     """
 
     name = kwargs['name']
