@@ -16,7 +16,7 @@ In this version, the player introduces his name and a chosen number of rounds be
 
 A raw of dashes will arise representing each letter of a random word to be guessed, within 6 tries.
 
-The player can introduce letters or words until out of tries or the word is guessed. 
+The player can introduce letters or entire words until out of tries or the word is guessed. 
 
 Game progress will be displayed all the time, represented by score, round number, lists of used letter and words.
 
@@ -31,8 +31,8 @@ The game is following this flow diagram:
 ### Existing Features
 
 - User input:
-    - Every input user is validated and error checked.
-    - In the initial phase user is allowed to pick its name and the number of rounds.
+    - Every user input is validated and error checked.
+    - In the initial phase user is allowed to pick his name and the number of rounds.
     - Allows the user to insert single letters and full words.
     - Letters and words are not case sensitive.
 
@@ -41,8 +41,8 @@ The game is following this flow diagram:
 ![Welcome screen](assets/images/welcome-screen.jpg)
 
 - Dashboard
-    - The game continuously updates the user about the progress via the dashboard. It contains information about score, tries left, current round number, used letters and used words.
-    - Has the classic hangman darwing which updates based on tries.
+    - The game continuously updates the player about the progress via the dashboard. It contains information about score, tries left, current round number, used letters and used words.
+    - Has the classic hangman drawing, which updates based on tries.
     - Has an incremental display of the secret word.
     - The player cannot see the entire word until a correct guess is made or game over.
 
@@ -50,22 +50,22 @@ The game is following this flow diagram:
 
 - User feedback messages like "Nice try!" and "That's right!".
 
-- Terminal is frequently clreared to keep the game in players focus.
+- Terminal is frequently cleared to keep the game in players focus.
 
 - One randomly selected word per round.
 
 - Play against computer.
 
-- Possibility to start a new game exsiting the game.
+- Possibility to start a new game exsits in the game.
 
-- Possibility to change easily change the word bank, by adding/replacing text into the `words.txt` file.
+- Possibility to easily change the word bank, by adding/replacing text into the `words.txt` file.
 
 - No external or third-party dependencies.
 
 ### Future features
-- Add 2-player mode, where one `user1` introduces the word, while `user2` guesses. If `user2` guesses its score goes up by one point, otherwise `user1`'s score goes up.
+- Add 2-player mode, where one `user1` introduces the word, while `user2` guesses. If `user2` guesses his score goes up by one point, otherwise `user1`'s score goes up.
 - Add multiple difficulty levels.
-- Add possibility for user to choose the of words from which to choose.
+- Add possibility for user to choose the list of words from which to choose.
 - Refactor the game to use classes.
 
 ## Testing
@@ -83,10 +83,32 @@ I have tested the code manually by:
 - Used letters allowed dupplicated values if the user selected the same wrong charather twice. Solved by checking if the character is already in the list before appending it.
 - Sometimes words with punctuation were randomized from the file, which creates imposibility to win. Solved by removing the punctuation in the text file.
 - The case sensitive was making the game impossible to win. I removed this sensitivity by converting both the randomized word and user inputs to uppercase.
-- Because of the `clearing` terminal approach, the end of round display was not visible to the user, because the next round would start. This bug was visible only when number of rounds was bigger than one. I solved this by asking the user to press any key to start a new round. This was the revealed secret word can be seen.
+- Because of the `clearing` terminal approach, the end of round display was not visible to the user, next round started automatically. This bug was visible only when number of rounds was bigger than one. I solved this by asking the user to press any key to start a new round. This was the revealed secret word can be seen.
 
 ### Open bugs
 - None
+
+## Deplyment
+
+This project was deployed using Code Institute's mock terminal for Heroku.
+
+Steps for deployment:
+- Fork or clone repository
+- Create a new Heroku application
+- Set the buildbacks to `Python` and `NodeJS`
+- Link the Heroku app to the repository
+- Click on *Deploy*
+
+## Credits
+- Code Institute for deployment mock terminal
+- [Wikipedia](https://en.wikipedia.org/wiki/Hangman_(game)) for information on Hangman(game)
+- [This file](https://gist.github.com/chrishorton/8510732aa9a80a03c829b09f12e20d9c) for Hangman ASCII art
+- [ASCII art](https://fsymbols.com/text-art/#all_cats)
+- [Fallowing YouTube video](https://www.youtube.com/watch?v=m4nEnsavl6w&ab_channel=Kite) as inspiration
+- [For suggestion](https://www.geeksforgeeks.org/pulling-a-random-word-or-string-from-a-line-in-a-text-file-in-python/) in order to extract a random word from a text.
+- Oxford Internationals English Schools, for words.txt [text content](https://www.oxfordinternationalenglish.com/a-brief-history-of-the-english-language/)
+
+
 
 ```mermaid
 graph TD 
