@@ -5,7 +5,7 @@ Hangman is a Python command-line game after the classic paper and pencil guessin
 Users try to guess a word suggesting letters and words within six tries. A row of dashes represents the word to guess.
 ![Display](assets/images/responsive.jpg)
 
-[The live version of the project can be accessed here.](https://antocim-hangman.herokuapp.com/)
+[The live version of the project can be accessed here.](https://hangman-r13n.onrender.com)
 
 ## How to play
 
